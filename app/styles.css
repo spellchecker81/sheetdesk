@@ -1,0 +1,307 @@
+/* SheetDesk styles — clean, modern, Excel-familiar. */
+
+:root {
+  --accent: #217346;          /* Excel-style green */
+  --accent-dark: #185c37;
+  --accent-soft: rgba(33, 115, 70, 0.12);
+  --header-bg: #f3f4f6;
+  --header-fg: #444;
+  --grid-line: #d4d4d4;
+  --fg: #1a1a1a;
+  --bg: #ffffff;
+  --toolbar-bg: #fafafa;
+  --status-bg: #f3f4f6;
+  --error-fg: #c00000;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  color: var(--fg);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  user-select: none;
+}
+
+/* ------------------------------ Toolbar ------------------------------ */
+#toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--grid-line);
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+}
+
+.tb-group { display: flex; align-items: center; gap: 2px; }
+.tb-sep { width: 1px; height: 22px; background: var(--grid-line); margin: 0 8px; }
+
+.tb-btn {
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 4px;
+  padding: 4px 9px;
+  font-size: 13px;
+  color: var(--fg);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.tb-btn:hover { background: #e8e8e8; border-color: #cfcfcf; }
+.tb-btn:active { background: #dcdcdc; }
+.tb-btn.tb-toggle.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-dark); }
+
+#toolbar select {
+  font-size: 13px;
+  padding: 4px 6px;
+  border: 1px solid var(--grid-line);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+/* ---------------------------- Formula bar ---------------------------- */
+#formulabar {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--grid-line);
+  background: #fff;
+  flex: 0 0 auto;
+  user-select: none;
+}
+
+#namebox {
+  min-width: 72px;
+  padding: 7px 10px;
+  text-align: center;
+  font-weight: 600;
+  border-right: 1px solid var(--grid-line);
+  background: var(--header-bg);
+  color: var(--header-fg);
+}
+
+#fx {
+  padding: 7px 12px;
+  font-style: italic;
+  font-family: Georgia, serif;
+  color: #666;
+  border-right: 1px solid var(--grid-line);
+  background: var(--header-bg);
+}
+
+#formula-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  user-select: text;
+  background: #fff;
+  color: var(--fg);
+}
+#formula-input[readonly] { background: #f7f7f7; color: #666; }
+
+/* -------------------------------- Grid ------------------------------- */
+#grid-wrap {
+  flex: 1 1 auto;
+  overflow: auto;
+  position: relative;
+  background: #fff;
+}
+
+#grid {
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+#grid thead th, #grid tbody td.rowhdr {
+  position: sticky;
+  background: var(--header-bg);
+  color: var(--header-fg);
+  font-weight: 600;
+  text-align: center;
+  z-index: 2;
+}
+
+#grid thead th {
+  top: 0;
+  height: 24px;
+  min-width: 100px;
+  border-right: 1px solid var(--grid-line);
+  border-bottom: 1px solid var(--grid-line);
+  font-size: 12px;
+}
+
+#grid thead th.corner {
+  left: 0;
+  z-index: 3;
+  min-width: 44px;
+  width: 44px;
+}
+
+#grid tbody td.rowhdr {
+  left: 0;
+  width: 44px;
+  min-width: 44px;
+  border-right: 1px solid var(--grid-line);
+  border-bottom: 1px solid var(--grid-line);
+  font-size: 12px;
+  z-index: 2;
+}
+
+#grid td.c {
+  width: 100px;
+  min-width: 100px;
+  height: 24px;
+  border-right: 1px solid var(--grid-line);
+  border-bottom: 1px solid var(--grid-line);
+  padding: 0;
+  cursor: cell;
+  overflow: hidden;
+}
+
+#grid td.c .v {
+  width: 100%;
+  height: 100%;
+  padding: 3px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  line-height: 18px;
+  border: 1px solid transparent; /* reserve space for selection borders */
+}
+
+/* selection + active cell */
+#grid td.c .v.sel {
+  background: var(--accent-soft);
+}
+#grid td.c .v.anchor {
+  background: #fff;
+  border: 2px solid var(--accent);
+  padding: 2px 4px; /* compensate for the thicker border */
+  z-index: 1;
+  position: relative;
+}
+#grid td.c .v.anchor.sel { background: #fff; }
+
+/* spilled (non-anchor) cells are display mirrors */
+#grid td.c .v.spill {
+  outline: 1px dotted #888;
+  outline-offset: -2px;
+  color: #333;
+}
+
+#grid td.c .v.err { color: var(--error-fg); }
+#grid td.c .v.b { font-weight: 700; }
+#grid td.c .v.i { font-style: italic; }
+#grid td.c .v.al { text-align: left; }
+#grid td.c .v.ac { text-align: center; }
+#grid td.c .v.ar { text-align: right; }
+
+/* in-cell editor overlay */
+#cell-editor {
+  position: fixed;
+  z-index: 50;
+  border: 2px solid var(--accent);
+  outline: none;
+  font-size: 13px;
+  font-family: inherit;
+  padding: 1px 3px;
+  background: #fff;
+  color: var(--fg);
+  user-select: text;
+}
+
+/* ----------------------------- Sheet tabs ---------------------------- */
+#sheet-tabs {
+  display: flex;
+  align-items: center;
+  background: var(--status-bg);
+  border-top: 1px solid var(--grid-line);
+  padding: 4px 10px;
+  gap: 4px;
+  flex: 0 0 auto;
+  overflow-x: auto;
+}
+
+#tabs { display: flex; gap: 2px; }
+
+.sheet-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--header-fg);
+  white-space: nowrap;
+}
+.sheet-tab:hover { background: #e6e6e6; }
+.sheet-tab.active {
+  background: #fff;
+  color: var(--accent-dark);
+  font-weight: 600;
+  border-color: var(--grid-line);
+}
+
+.sheet-tab .tab-x {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  line-height: 14px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 12px;
+  color: #888;
+}
+.sheet-tab .tab-x:hover { background: #d33; color: #fff; }
+
+#btn-add-sheet {
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--accent-dark);
+}
+#btn-add-sheet:hover { background: var(--accent-soft); border-color: var(--accent); }
+
+/* ----------------------------- Status bar ---------------------------- */
+#statusbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--status-bg);
+  border-top: 1px solid var(--grid-line);
+  padding: 5px 12px;
+  font-size: 12px;
+  color: var(--header-fg);
+  flex: 0 0 auto;
+  min-height: 26px;
+}
+
+#status-msg { flex: 1; }
+#status-agg { white-space: nowrap; color: var(--accent-dark); font-weight: 600; }

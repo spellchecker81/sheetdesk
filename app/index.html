@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SheetDesk</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <!-- Toolbar -->
+  <div id="toolbar" role="toolbar" aria-label="SheetDesk toolbar">
+    <div class="tb-group">
+      <button class="tb-btn" id="btn-new" title="New workbook (Ctrl+N)">New</button>
+      <button class="tb-btn" id="btn-open" title="Open workbook (Ctrl+O)">Open</button>
+      <button class="tb-btn" id="btn-save" title="Save (Ctrl+S)">Save</button>
+      <button class="tb-btn" id="btn-saveas" title="Save as…">Save As</button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <button class="tb-btn" id="btn-import" title="Import CSV into the active sheet">Import CSV</button>
+      <button class="tb-btn" id="btn-export-csv" title="Export used range as CSV">Export CSV</button>
+      <button class="tb-btn" id="btn-export-xlsx" title="Export used range as XLSX" hidden>Export XLSX</button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <button class="tb-btn" id="btn-undo" title="Undo (Ctrl+Z)">Undo</button>
+      <button class="tb-btn" id="btn-redo" title="Redo (Ctrl+Shift+Z)">Redo</button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <button class="tb-btn tb-toggle" id="btn-bold" title="Bold (Ctrl+B)"><b>B</b></button>
+      <button class="tb-btn tb-toggle" id="btn-italic" title="Italic (Ctrl+I)"><i>I</i></button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <select id="sel-numfmt" title="Number format" aria-label="Number format">
+        <option value="general">General</option>
+        <option value="number">Number</option>
+        <option value="currency">Currency</option>
+        <option value="percent">Percent</option>
+        <option value="date">Date</option>
+      </select>
+      <select id="sel-fontsize" title="Font size" aria-label="Font size">
+        <option value="">Size</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="14">14</option>
+        <option value="16">16</option>
+        <option value="18">18</option>
+        <option value="20">20</option>
+        <option value="24">24</option>
+        <option value="28">28</option>
+      </select>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <button class="tb-btn tb-toggle" id="btn-align-left" title="Align left" aria-label="Align left">⇤</button>
+      <button class="tb-btn tb-toggle" id="btn-align-center" title="Align center" aria-label="Align center">⇥⇤</button>
+      <button class="tb-btn tb-toggle" id="btn-align-right" title="Align right" aria-label="Align right">⇥</button>
+    </div>
+  </div>
+
+  <!-- Formula bar -->
+  <div id="formulabar">
+    <div id="namebox" title="Active cell">A1</div>
+    <div id="fx">fx</div>
+    <input id="formula-input" type="text" spellcheck="false" autocomplete="off" aria-label="Formula bar">
+  </div>
+
+  <!-- Grid -->
+  <div id="grid-wrap">
+    <table id="grid" aria-label="Spreadsheet grid"><tbody id="grid-body"></tbody></table>
+  </div>
+
+  <!-- Sheet tabs -->
+  <div id="sheet-tabs" aria-label="Sheets">
+    <div id="tabs"></div>
+    <button id="btn-add-sheet" title="Add sheet">+</button>
+  </div>
+
+  <!-- Status bar -->
+  <div id="statusbar">
+    <span id="status-msg"></span>
+    <span id="status-agg"></span>
+  </div>
+</div>
+
+<!-- Hidden file inputs (used in plain-browser mode and for CSV import) -->
+<input type="file" id="file-open" accept=".sheetdesk.json,.json,application/json" hidden>
+<input type="file" id="file-csv" accept=".csv,.txt,text/csv" hidden>
+
+<script src="vendor/xlsx.full.min.js"></script>
+<script src="formula.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
